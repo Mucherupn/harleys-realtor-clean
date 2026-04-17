@@ -15,11 +15,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   if (!post) notFound();
 
   return (
-    <SectionContainer className="max-w-3xl space-y-5 py-16">
+    <SectionContainer className="max-w-4xl space-y-5 py-12 sm:space-y-6 sm:py-16 md:py-20">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema(post)) }} />
       <p className="text-xs uppercase tracking-wide text-[#6b7280]">{post.category} • {formatDate(post.publishedAt)}</p>
-      <h1 className="text-4xl font-semibold">{post.title}</h1>
-      <p className="text-[#6b7280]">{post.content}</p>
+      <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">{post.title}</h1>
+      <p className="text-sm leading-8 text-[#6b7280] sm:text-base">{post.content}</p>
     </SectionContainer>
   );
 }

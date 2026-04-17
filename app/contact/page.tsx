@@ -7,12 +7,12 @@ export const metadata = buildMetadata({ title: 'Contact Us', description: 'Reach
 
 export default function ContactPage() {
   return (
-    <SectionContainer className="grid gap-10 py-16 lg:grid-cols-2">
+    <SectionContainer className="grid gap-8 py-12 sm:py-16 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-10 lg:py-20">
       <div className="space-y-4">
-        <h1 className="text-4xl font-semibold">Contact Us</h1>
-        <p className="text-[#6b7280]">Speak with our Nairobi team for clear guidance and prompt follow-up.</p>
+        <h1 className="text-3xl font-semibold sm:text-4xl">Contact Us</h1>
+        <p className="text-sm leading-7 text-[#6b7280] sm:text-base">Speak with our Nairobi team for clear guidance and prompt follow-up.</p>
         <p className="text-sm text-[#111111]"><strong>Phone:</strong> {siteConfig.phone}</p>
-        <p className="text-sm text-[#111111]"><strong>Email:</strong> {siteConfig.email}</p>
+        <p className="text-sm break-all text-[#111111]"><strong>Email:</strong> {siteConfig.email}</p>
         <p className="text-sm text-[#111111]"><strong>Office:</strong> {siteConfig.location}</p>
       </div>
       <ContactForm />

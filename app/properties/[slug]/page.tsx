@@ -17,13 +17,13 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   }
 
   return (
-    <SectionContainer className="grid gap-8 py-16 lg:grid-cols-[1fr_360px]">
+    <SectionContainer className="grid gap-8 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:py-20 xl:grid-cols-[minmax(0,1fr)_360px]">
       <PropertyDetails property={property} />
-      <div className="space-y-6">
+      <div className="space-y-6 lg:sticky lg:top-24">
         <InquiryForm propertySlug={property.slug} />
         <div className="rounded-xl border border-[#e5e7eb] p-5">
           <h3 className="font-semibold">Related listings</h3>
-          <p className="mt-2 text-sm text-[#6b7280]">Additional recommendations will appear here as the catalog grows.</p>
+          <p className="mt-2 text-sm leading-6 text-[#6b7280]">Additional recommendations will appear here as the catalog grows.</p>
         </div>
       </div>
     </SectionContainer>
