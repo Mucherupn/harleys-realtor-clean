@@ -11,7 +11,11 @@ import { Button } from '@/components/ui/button';
 
 export function QuoteForm() {
   const [status, setStatus] = useState('');
-  const { register, handleSubmit, formState: { isSubmitting } } = useForm<QuoteInput>({ resolver: zodResolver(quoteSchema) });
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting }
+  } = useForm<QuoteInput>({ resolver: zodResolver(quoteSchema) });
 
   async function onSubmit(values: QuoteInput) {
     const response = await fetch('/api/quote', { method: 'POST', body: JSON.stringify(values) });
@@ -19,7 +23,7 @@ export function QuoteForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 rounded-2xl border border-[#e5e7eb] bg-white p-5 sm:p-6">
       <Input placeholder="Full name" {...register('name')} />
       <Input type="email" placeholder="Email" {...register('email')} />
       <Input placeholder="Phone" {...register('phone')} />
@@ -31,7 +35,9 @@ export function QuoteForm() {
       </Select>
       <Input placeholder="Property location" {...register('propertyLocation')} />
       <Textarea rows={5} placeholder="Request details" {...register('details')} />
-      <Button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Submitting...' : 'Request Quote'}</Button>
+      <Button className="w-full sm:w-auto" type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Submitting...' : 'Request Quote'}
+      </Button>
       {status ? <p className="text-sm text-[#6b7280]">{status}</p> : null}
     </form>
   );

@@ -6,10 +6,10 @@ export const metadata = buildMetadata({ title: 'Request Quote', description: 'Su
 
 export default function RequestQuotePage() {
   return (
-    <SectionContainer className="grid gap-10 py-16 lg:grid-cols-2">
+    <SectionContainer className="grid gap-8 py-12 sm:py-16 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-10 lg:py-20">
       <div className="space-y-4">
-        <h1 className="text-4xl font-semibold">Request Quote</h1>
-        <p className="text-[#6b7280]">Share your requirements and our team will return with a tailored scope and fee guidance.</p>
+        <h1 className="text-3xl font-semibold sm:text-4xl">Request Quote</h1>
+        <p className="text-sm leading-7 text-[#6b7280] sm:text-base">Share your requirements and our team will return with a tailored scope and fee guidance.</p>
       </div>
       <QuoteForm />
     </SectionContainer>

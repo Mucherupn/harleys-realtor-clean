@@ -6,7 +6,7 @@ import { featuredProperties } from '@/lib/queries/public';
 
 export function FeaturedProperties() {
   return (
-    <SectionContainer className="mt-16 space-y-10 md:mt-20">
+    <SectionContainer className="mt-12 space-y-8 sm:mt-16 md:mt-20 md:space-y-10">
       <SectionHeading
         eyebrow="Featured Listings"
         title="Selected opportunities across Nairobi"

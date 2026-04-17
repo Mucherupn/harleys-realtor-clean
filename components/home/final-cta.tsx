@@ -4,11 +4,11 @@ import { SectionContainer } from '@/components/ui/section-container';
 
 export function FinalCta() {
   return (
-    <section className="mt-20 bg-[#121315] py-18 md:py-24">
+    <section className="mt-16 bg-[#121315] py-12 sm:mt-20 sm:py-16 md:py-24">
       <SectionContainer>
         <div className="mx-auto max-w-4xl text-center text-white">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">Begin Your Next Move</p>
-          <h2 className="mt-4 text-4xl font-semibold leading-tight md:text-5xl">Ready to execute with confidence in Nairobi?</h2>
+          <h2 className="mt-4 text-3xl font-semibold leading-tight sm:text-4xl md:text-5xl">Ready to execute with confidence in Nairobi?</h2>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-white/70 md:text-lg">
             Engage Harleys Realtor for structured sales, lettings, management, and advisory support built for long-term value.
           </p>

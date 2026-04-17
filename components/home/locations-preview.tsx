@@ -6,7 +6,7 @@ import { focusLocations } from '@/lib/queries/public';
 
 export function LocationsPreview() {
   return (
-    <SectionContainer className="mt-20 space-y-10">
+    <SectionContainer className="mt-12 space-y-8 sm:mt-16 md:mt-20 md:space-y-10">
       <SectionHeading
         eyebrow="Nairobi Focus"
         title="Explore prime locations with active demand"
@@ -16,10 +16,10 @@ export function LocationsPreview() {
         {focusLocations.map((location, index) => (
           <article
             key={location.name}
-            className="group relative overflow-hidden rounded-2xl border border-[#dde2ea] bg-[linear-gradient(130deg,#ffffff_0%,#f4f6fa_100%)] p-8 shadow-[0_8px_24px_rgba(17,17,17,0.05)]"
+            className="group relative overflow-hidden rounded-2xl border border-[#dde2ea] bg-[linear-gradient(130deg,#ffffff_0%,#f4f6fa_100%)] p-6 sm:p-8 shadow-[0_8px_24px_rgba(17,17,17,0.05)]"
           >
             <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#7f8794]">Area {index + 1}</p>
-            <h3 className="mt-3 text-3xl font-semibold text-[#121826]">{location.name}</h3>
+            <h3 className="mt-3 text-2xl font-semibold text-[#121826] sm:text-3xl">{location.name}</h3>
             <p className="mt-4 max-w-md text-sm leading-6 text-[#5f6773]">{location.summary}</p>
             <Link
               href="/properties"
