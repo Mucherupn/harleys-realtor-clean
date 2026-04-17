@@ -1,16 +1,33 @@
+import Link from 'next/link';
+import { MoveRight } from 'lucide-react';
 import { SectionContainer } from '@/components/ui/section-container';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { focusLocations } from '@/lib/queries/public';
 
 export function LocationsPreview() {
   return (
-    <SectionContainer className="mt-20 space-y-8">
-      <SectionHeading eyebrow="Nairobi Focus" title="Neighborhoods we actively cover" />
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {focusLocations.map((location) => (
-          <article key={location.name} className="rounded-xl border border-[#e5e7eb] p-5">
-            <h3 className="font-semibold text-[#111111]">{location.name}</h3>
-            <p className="mt-2 text-sm text-[#6b7280]">{location.summary}</p>
+    <SectionContainer className="mt-20 space-y-10">
+      <SectionHeading
+        eyebrow="Nairobi Focus"
+        title="Explore prime locations with active demand"
+        description="Neighborhood-level guidance for buyers, landlords, and investors looking at Nairobi's most resilient residential and mixed-use zones."
+      />
+      <div className="grid gap-5 md:grid-cols-2">
+        {focusLocations.map((location, index) => (
+          <article
+            key={location.name}
+            className="group relative overflow-hidden rounded-2xl border border-[#dde2ea] bg-[linear-gradient(130deg,#ffffff_0%,#f4f6fa_100%)] p-8 shadow-[0_8px_24px_rgba(17,17,17,0.05)]"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#7f8794]">Area {index + 1}</p>
+            <h3 className="mt-3 text-3xl font-semibold text-[#121826]">{location.name}</h3>
+            <p className="mt-4 max-w-md text-sm leading-6 text-[#5f6773]">{location.summary}</p>
+            <Link
+              href="/properties"
+              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#111111] transition-colors group-hover:text-[#a11414]"
+            >
+              Browse {location.name} listings <MoveRight size={15} />
+            </Link>
+            <div className="pointer-events-none absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-[#e71212]/8 blur-2xl" />
           </article>
         ))}
       </div>
