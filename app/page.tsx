@@ -1,5 +1,4 @@
 import { Hero } from '@/components/home/hero';
-import { PropertySearchCard } from '@/components/home/property-search-card';
 import { TrustStrip } from '@/components/home/trust-strip';
 import { FeaturedProperties } from '@/components/home/featured-properties';
 import { ServicesPreview } from '@/components/home/services-preview';
@@ -17,7 +16,6 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <PropertySearchCard />
       <TrustStrip />
       <FeaturedProperties />
       <ServicesPreview />
