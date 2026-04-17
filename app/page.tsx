@@ -1,5 +1,4 @@
 import { Hero } from '@/components/home/hero';
-import { TrustStrip } from '@/components/home/trust-strip';
 import { FeaturedProperties } from '@/components/home/featured-properties';
 import { ServicesPreview } from '@/components/home/services-preview';
 import { LocationsPreview } from '@/components/home/locations-preview';
@@ -16,7 +15,6 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <TrustStrip />
       <FeaturedProperties />
       <ServicesPreview />
       <LocationsPreview />
