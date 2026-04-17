@@ -1,33 +1,50 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { SectionContainer } from '@/components/ui/section-container';
-import { siteConfig } from '@/lib/constants/site';
-import { PropertySearchCard } from '@/components/home/property-search-card';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { SectionContainer } from "@/components/ui/section-container";
+import { PropertySearchCard } from "@/components/home/property-search-card";
 
 export function Hero() {
   return (
     <section className="relative overflow-hidden text-white">
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage:
-            'url("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2200&q=80")'
+            'url("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2200&q=80")',
         }}
       />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,10,0.85)_0%,rgba(10,10,10,0.64)_48%,rgba(10,10,10,0.5)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,7,7,0.84)_0%,rgba(7,7,7,0.60)_45%,rgba(7,7,7,0.42)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(231,18,18,0.16),transparent_24%)]" />
 
-      <SectionContainer className="relative py-22 md:py-30">
-        <div className="max-w-3xl space-y-6 md:space-y-7">
-          <p className="text-sm uppercase tracking-[0.16em] text-white/80">Nairobi Real Estate Since {siteConfig.establishedYear}</p>
-          <h1 className="text-4xl font-semibold tracking-tight md:text-6xl">Premium real estate guidance for decisive clients.</h1>
-          <p className="max-w-2xl text-base text-white/85 md:text-lg">We support property sales, lettings, management, and consultancy with deep Nairobi market context and practical execution.</p>
-          <div className="flex flex-wrap gap-3 pt-2">
-            <Link href="/properties"><Button className="shadow-lg shadow-black/20">View Listings</Button></Link>
-            <Link href="/services"><Button variant="secondary" className="border-white/20 bg-white/95">Explore Services</Button></Link>
+      <SectionContainer className="relative py-24 md:py-32">
+        <div className="max-w-3xl">
+          <p className="text-[11px] uppercase tracking-[0.22em] text-white/72">
+            Harleys Realtor
+          </p>
+
+          <h1 className="mt-5 max-w-3xl text-4xl font-medium leading-[0.98] md:text-6xl">
+            Sales. Letting. Management.
+          </h1>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/properties">
+              <Button className="bg-[#e71212] px-6 text-white shadow-lg shadow-black/20 hover:bg-[#cf1010]">
+                View Listings
+              </Button>
+            </Link>
+
+            <Link href="/services">
+              <Button
+                variant="secondary"
+                className="border-white/15 bg-white text-neutral-900 hover:bg-neutral-100"
+              >
+                Explore Services
+              </Button>
+            </Link>
           </div>
         </div>
 
-        <PropertySearchCard className="mt-10 p-5 shadow-xl shadow-black/20 md:mt-12 md:p-6" />
+        <PropertySearchCard className="mt-12 border border-white/10 bg-white/95 p-5 shadow-2xl shadow-black/20 backdrop-blur md:mt-14 md:p-6" />
       </SectionContainer>
     </section>
   );
