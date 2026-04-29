@@ -174,7 +174,7 @@ export function PropertyForm({ property }: { property?: AdminProperty }) {
     });
   };
 
-  const onSubmit = handleSubmit((values) => {
+  const onSubmit = handleSubmit(async (values) => {
     const payload = {
       ...values,
       price: Number(values.price),
@@ -193,8 +193,10 @@ export function PropertyForm({ property }: { property?: AdminProperty }) {
       return;
     }
 
-    createProperty(payload);
-    router.push('/stream/properties');
+    const createdPropertyId = await createProperty(payload);
+    if (createdPropertyId) {
+      router.push('/stream/properties');
+    }
   });
 
   return (

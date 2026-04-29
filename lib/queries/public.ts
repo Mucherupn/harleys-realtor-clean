@@ -11,7 +11,7 @@ const logError = (scope: string, error: unknown) => {
   if (!isDev || !error) return;
 
   if (
-    typeof error === "object" &&
+    typeof error === 'object' &&
     error !== null &&
     Object.keys(error).length === 0
   ) {

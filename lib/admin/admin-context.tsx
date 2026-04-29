@@ -3,6 +3,7 @@
 import { createContext, useContext, useMemo, useState, type PropsWithChildren } from 'react';
 import { applyFeaturedLimit, clearFeaturedStatus } from '@/lib/admin/featured-properties';
 import { initialArticles, initialProperties, initialSettings, initialTeamMembers } from '@/lib/mock/admin-seed';
+import { createSupabaseBrowserClient } from '@/lib/supabase/browser';
 import type { AdminArticle, AdminProperty, AdminSettings, AdminTeamMember } from '@/types/admin';
 
 interface AdminContextValue {
@@ -10,7 +11,7 @@ interface AdminContextValue {
   articles: AdminArticle[];
   teamMembers: AdminTeamMember[];
   settings: AdminSettings;
-  createProperty: (input: Omit<AdminProperty, 'id' | 'createdAt' | 'updatedAt' | 'featuredAt'>) => string;
+  createProperty: (input: Omit<AdminProperty, 'id' | 'createdAt' | 'updatedAt' | 'featuredAt'>) => Promise<string | null>;
   updateProperty: (id: string, input: Omit<AdminProperty, 'id' | 'createdAt' | 'updatedAt' | 'featuredAt'>) => void;
   deleteProperty: (id: string) => void;
   togglePropertyPublished: (id: string) => void;
@@ -42,9 +43,39 @@ export function AdminProvider({ children }: PropsWithChildren) {
       articles,
       teamMembers,
       settings,
-      createProperty: (input) => {
+      createProperty: async (input) => {
         const now = new Date().toISOString();
         const id = createId('prop');
+        const featuredAt = input.featured ? now : null;
+
+        const supabase = createSupabaseBrowserClient();
+        if (!supabase) {
+          return null;
+        }
+
+        const { error } = await supabase.from('properties').insert({
+          title: input.title,
+          slug: input.slug,
+          purpose: input.purpose,
+          property_type: input.propertyType,
+          location: input.location,
+          price: input.price,
+          bedrooms: input.bedrooms,
+          bathrooms: input.bathrooms,
+          area_size: input.area,
+          short_description: input.shortDescription,
+          description: input.fullDescription,
+          cover_image_url: input.coverImage,
+          gallery_image_urls: input.galleryImages,
+          featured: input.featured,
+          featured_at: featuredAt,
+          published: input.published === true,
+        });
+
+        if (error) {
+          return null;
+        }
+
         let nextProperties: AdminProperty[] = [
           ...properties,
           {
@@ -52,7 +83,7 @@ export function AdminProvider({ children }: PropsWithChildren) {
             ...input,
             createdAt: now,
             updatedAt: now,
-            featuredAt: input.featured ? now : null,
+            featuredAt,
           },
         ];
 
@@ -61,6 +92,7 @@ export function AdminProvider({ children }: PropsWithChildren) {
         }
 
         setProperties(nextProperties);
+        console.info('[admin:properties] Supabase insert successful.', { slug: input.slug });
         return id;
       },
       updateProperty: (id, input) => {
