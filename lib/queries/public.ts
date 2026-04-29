@@ -10,12 +10,6 @@ const isDev = process.env.NODE_ENV !== 'production';
 const logError = (scope: string, error: unknown) => isDev && console.error(`[public:${scope}]`, error);
 
 
-export const services: Service[] = [
-  { slug: 'letting-and-sales', title: 'Letting and Sales', description: 'End-to-end support for landlords, sellers, and buyers.', capabilities: ['Pricing strategy', 'Marketing', 'Viewings management'], process: ['Brief', 'Launch', 'Close'] },
-  { slug: 'property-management', title: 'Property Management', description: 'Operational management for residential and mixed-use portfolios.', capabilities: ['Tenant sourcing', 'Rent collection', 'Maintenance coordination'], process: ['Onboarding', 'Setup', 'Reporting'] },
-  { slug: 'consultancy', title: 'Consultancy', description: 'Strategic advisory for acquisition, disposal, and portfolio decisions.', capabilities: ['Valuation support', 'Feasibility', 'Negotiation strategy'], process: ['Objective setting', 'Analysis', 'Recommendations'] }
-];
-export const focusLocations: FocusLocation[] = [];
 
 const toProperty = (row: any): Property => ({
   id: String(row.id),
@@ -54,6 +48,26 @@ export async function getArticleBySlug(slug: string): Promise<Post | null> {
   return { id: String(data.id), slug: data.slug, title: data.title, excerpt: data.excerpt ?? '', content: data.content ?? '', category: data.category ?? 'Insights', publishedAt: data.published_at ?? data.created_at, author: data.author ?? 'Harleys Realtor' };
 }
 
-export async function getPublishedTeamMembers(): Promise<Agent[]> { return []; }
-export async function getPublishedServices(): Promise<Service[]> { return []; }
-export async function getPublishedLocations(): Promise<FocusLocation[]> { return []; }
+export async function getPublishedTeamMembers(): Promise<Agent[]> {
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return [];
+  const { data, error } = await supabase.from('team_members').select('*').eq('published', true).order('created_at', { ascending: false });
+  if (error) { logError('getPublishedTeamMembers', error); return []; }
+  return (data ?? []).map((row: any) => ({ id: String(row.id), slug: row.slug ?? String(row.id), name: row.name ?? '', role: row.role ?? '', bio: row.bio ?? '', focus: row.focus ?? '', email: row.email ?? '' }));
+}
+
+export async function getPublishedServices(): Promise<Service[]> {
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return [];
+  const { data, error } = await supabase.from('services').select('*').eq('published', true).order('created_at', { ascending: false });
+  if (error) { logError('getPublishedServices', error); return []; }
+  return (data ?? []).map((row: any) => ({ slug: row.slug, title: row.title, description: row.description ?? '', capabilities: row.capabilities ?? [], process: row.process ?? [] })).filter((row: any): row is Service => ['letting-and-sales','property-management','consultancy'].includes(row.slug));
+}
+
+export async function getPublishedLocations(): Promise<FocusLocation[]> {
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return [];
+  const { data, error } = await supabase.from('locations').select('*').eq('published', true).order('created_at', { ascending: false });
+  if (error) { logError('getPublishedLocations', error); return []; }
+  return (data ?? []).map((row: any) => ({ name: row.name, summary: row.summary ?? '' }));
+}
