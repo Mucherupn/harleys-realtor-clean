@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useAdmin } from '@/lib/admin/admin-context';
+import { createSupabaseBrowserClient } from '@/lib/supabase/browser';
 import { buildPropertySlug } from '@/lib/utils/slug';
 import type { AdminProperty } from '@/types/admin';
 
@@ -59,6 +60,10 @@ function createImagePreview(file: File): string {
 
 function revokeImagePreviews(previews: Array<{ previewUrl: string }>): void {
   previews.forEach((preview) => URL.revokeObjectURL(preview.previewUrl));
+}
+
+function toStoragePath(slug: string, filename: string): string {
+  return `properties/${slug}/${filename}`;
 }
 
 function mapPropertyToForm(property?: AdminProperty): FormValues {
@@ -175,16 +180,40 @@ export function PropertyForm({ property }: { property?: AdminProperty }) {
   };
 
   const onSubmit = handleSubmit(async (values) => {
+    let coverImage = values.coverImage;
+    let galleryImages = values.galleryImages
+      .split(',')
+      .map((value: string) => value.trim())
+      .filter(Boolean);
+
+    if (selectedImages.length > 0) {
+      const supabase = createSupabaseBrowserClient();
+      if (!supabase) return;
+      const targetSlug = values.slug || autoSlug;
+      const uploadedPaths: string[] = [];
+      for (const image of selectedImages) {
+        const storagePath = toStoragePath(targetSlug, image.name);
+        const { error } = await supabase.storage.from('property-images').upload(storagePath, image.file, { upsert: true });
+        if (error) {
+          throw error;
+        }
+        uploadedPaths.push(storagePath);
+      }
+      galleryImages = uploadedPaths;
+      const selectedCover = selectedImages.find((image) => image.isCover) ?? selectedImages[0];
+      if (selectedCover) {
+        coverImage = toStoragePath(targetSlug, selectedCover.name);
+      }
+    }
+
     const payload = {
       ...values,
+      coverImage,
       price: Number(values.price),
       bedrooms: Number(values.bedrooms),
       bathrooms: Number(values.bathrooms),
       area: Number(values.area),
-      galleryImages: values.galleryImages
-        .split(',')
-        .map((value: string) => value.trim())
-        .filter(Boolean),
+      galleryImages,
     };
 
     if (property) {

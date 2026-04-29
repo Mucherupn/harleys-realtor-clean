@@ -1,8 +1,9 @@
 'use client';
 
 import { createContext, useContext, useMemo, useState, type PropsWithChildren } from 'react';
+import { useEffect } from 'react';
 import { applyFeaturedLimit, clearFeaturedStatus } from '@/lib/admin/featured-properties';
-import { initialArticles, initialProperties, initialSettings, initialTeamMembers } from '@/lib/mock/admin-seed';
+import { initialArticles, initialSettings, initialTeamMembers } from '@/lib/mock/admin-seed';
 import { createSupabaseBrowserClient } from '@/lib/supabase/browser';
 import type { AdminArticle, AdminProperty, AdminSettings, AdminTeamMember } from '@/types/admin';
 
@@ -32,10 +33,42 @@ const AdminContext = createContext<AdminContextValue | null>(null);
 const createId = (prefix: string) => `${prefix}-${crypto.randomUUID()}`;
 
 export function AdminProvider({ children }: PropsWithChildren) {
-  const [properties, setProperties] = useState<AdminProperty[]>(initialProperties);
+  const [properties, setProperties] = useState<AdminProperty[]>([]);
   const [articles, setArticles] = useState<AdminArticle[]>(initialArticles);
   const [teamMembers, setTeamMembers] = useState<AdminTeamMember[]>(initialTeamMembers);
   const [settings, setSettings] = useState<AdminSettings>(initialSettings);
+
+  useEffect(() => {
+    const loadProperties = async () => {
+      const supabase = createSupabaseBrowserClient();
+      if (!supabase) return;
+      const { data, error } = await supabase.from('properties').select('*').order('created_at', { ascending: false });
+      if (error) return;
+      const mapped = (data ?? []).map((row: any) => ({
+        id: String(row.id),
+        title: row.title ?? '',
+        slug: row.slug ?? '',
+        purpose: row.purpose === 'rent' ? 'rent' : 'sale',
+        propertyType: row.property_type ?? '',
+        location: row.location ?? '',
+        price: Number(row.price ?? 0),
+        bedrooms: Number(row.bedrooms ?? 0),
+        bathrooms: Number(row.bathrooms ?? 0),
+        area: Number(row.area_size ?? 0),
+        shortDescription: row.short_description ?? '',
+        fullDescription: row.description ?? '',
+        coverImage: row.cover_image_url ?? '',
+        galleryImages: Array.isArray(row.gallery_image_urls) ? row.gallery_image_urls : [],
+        featured: row.featured === true,
+        published: row.published === true,
+        createdAt: row.created_at ?? '',
+        updatedAt: row.updated_at ?? '',
+        featuredAt: row.featured_at ?? null,
+      })) as AdminProperty[];
+      setProperties(mapped);
+    };
+    void loadProperties();
+  }, []);
 
   const value = useMemo<AdminContextValue>(
     () => ({
@@ -45,7 +78,6 @@ export function AdminProvider({ children }: PropsWithChildren) {
       settings,
       createProperty: async (input) => {
         const now = new Date().toISOString();
-        const id = createId('prop');
         const featuredAt = input.featured ? now : null;
 
         const supabase = createSupabaseBrowserClient();
@@ -53,7 +85,7 @@ export function AdminProvider({ children }: PropsWithChildren) {
           return null;
         }
 
-        const { error } = await supabase.from('properties').insert({
+        const { data, error } = await supabase.from('properties').insert({
           title: input.title,
           slug: input.slug,
           purpose: input.purpose,
@@ -70,12 +102,15 @@ export function AdminProvider({ children }: PropsWithChildren) {
           featured: input.featured,
           featured_at: featuredAt,
           published: input.published === true,
-        });
+        }).select('*').single();
 
         if (error) {
           return null;
         }
 
+        if (!data) return null;
+
+        const id = String(data.id);
         let nextProperties: AdminProperty[] = [
           ...properties,
           {
@@ -97,6 +132,27 @@ export function AdminProvider({ children }: PropsWithChildren) {
       },
       updateProperty: (id, input) => {
         const now = new Date().toISOString();
+        const supabase = createSupabaseBrowserClient();
+        if (supabase) {
+          void supabase.from('properties').update({
+            title: input.title,
+            slug: input.slug,
+            purpose: input.purpose,
+            property_type: input.propertyType,
+            location: input.location,
+            price: input.price,
+            bedrooms: input.bedrooms,
+            bathrooms: input.bathrooms,
+            area_size: input.area,
+            short_description: input.shortDescription,
+            description: input.fullDescription,
+            cover_image_url: input.coverImage,
+            gallery_image_urls: input.galleryImages,
+            featured: input.featured,
+            published: input.published === true,
+            updated_at: now,
+          }).eq('id', id);
+        }
         setProperties((current) => {
           const existing = current.find((property) => property.id === id);
           if (!existing) {
@@ -126,14 +182,24 @@ export function AdminProvider({ children }: PropsWithChildren) {
         });
       },
       deleteProperty: (id) => {
+        const supabase = createSupabaseBrowserClient();
+        if (supabase) {
+          void supabase.from('properties').delete().eq('id', id);
+        }
         setProperties((current) => current.filter((property) => property.id !== id));
       },
       togglePropertyPublished: (id) => {
         const now = new Date().toISOString();
         setProperties((current) =>
-          current.map((property) =>
-            property.id === id ? { ...property, published: !property.published, updatedAt: now } : property
-          )
+          current.map((property) => {
+            if (property.id !== id) return property;
+            const nextPublished = !property.published;
+            const supabase = createSupabaseBrowserClient();
+            if (supabase) {
+              void supabase.from('properties').update({ published: nextPublished, updated_at: now }).eq('id', id);
+            }
+            return { ...property, published: nextPublished, updatedAt: now };
+          })
         );
       },
       togglePropertyFeatured: (id) => {
@@ -145,9 +211,17 @@ export function AdminProvider({ children }: PropsWithChildren) {
           }
 
           if (existing.featured) {
+            const supabase = createSupabaseBrowserClient();
+            if (supabase) {
+              void supabase.from('properties').update({ featured: false, featured_at: null, updated_at: now }).eq('id', id);
+            }
             return clearFeaturedStatus(current, id, now);
           }
 
+          const supabase = createSupabaseBrowserClient();
+          if (supabase) {
+            void supabase.from('properties').update({ featured: true, featured_at: now, updated_at: now }).eq('id', id);
+          }
           return applyFeaturedLimit(current, id, now);
         });
       },

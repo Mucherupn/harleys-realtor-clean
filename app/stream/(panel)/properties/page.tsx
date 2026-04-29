@@ -18,6 +18,9 @@ export default function StreamPropertiesPage() {
       />
 
       <div className="overflow-x-auto rounded-xl border border-[#efefef]">
+        {properties.length === 0 ? (
+          <div className="p-8 text-sm text-[#6b7280]">No properties found in Supabase yet.</div>
+        ) : null}
         <table className="min-w-full text-left text-sm">
           <thead className="bg-[#fafafa] text-[#6b7280]">
             <tr>
