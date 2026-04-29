@@ -18,7 +18,7 @@ export default function StreamTeamPage() {
       />
 
       <div className="overflow-x-auto rounded-xl border border-[#efefef]">
-        <table className="min-w-full text-left text-sm">
+        <table className="min-w-[700px] w-full text-left text-sm">
           <thead className="bg-[#fafafa] text-[#6b7280]"><tr><th className="px-4 py-3 font-medium">Name</th><th className="px-4 py-3 font-medium">Contact</th><th className="px-4 py-3 font-medium">Status</th><th className="px-4 py-3 font-medium">Actions</th></tr></thead>
           <tbody>
             {teamMembers.map((member) => (

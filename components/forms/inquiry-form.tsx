@@ -31,7 +31,7 @@ export function InquiryForm({ propertySlug }: { propertySlug: string }) {
       <Input type="email" placeholder="Email" {...register('email')} />
       <Input placeholder="Phone" {...register('phone')} />
       <Textarea rows={4} placeholder="Your message" {...register('message')} />
-      <Button className="w-full sm:w-auto" type="submit" disabled={isSubmitting}>
+      <Button className="w-full" type="submit" disabled={isSubmitting}>
         {isSubmitting ? 'Sending...' : 'Submit Inquiry'}
       </Button>
       {status ? <p className="text-sm text-[#6b7280]">{status}</p> : null}

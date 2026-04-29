@@ -21,7 +21,7 @@ export default function StreamPropertiesPage() {
         {properties.length === 0 ? (
           <div className="p-8 text-sm text-[#6b7280]">No properties found in Supabase yet.</div>
         ) : null}
-        <table className="min-w-full text-left text-sm">
+        <table className="min-w-[700px] w-full text-left text-sm">
           <thead className="bg-[#fafafa] text-[#6b7280]">
             <tr>
               <th className="px-4 py-3 font-medium">Property</th>

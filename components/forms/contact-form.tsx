@@ -28,7 +28,7 @@ export function ContactForm() {
       <Input placeholder="Email address" type="email" {...register('email')} />
       <Input placeholder="Phone number" {...register('phone')} />
       <Textarea placeholder="Tell us how we can help" rows={5} {...register('message')} />
-      <Button className="w-full sm:w-auto" type="submit" disabled={isSubmitting}>
+      <Button className="w-full" type="submit" disabled={isSubmitting}>
         {isSubmitting ? 'Sending...' : 'Send Message'}
       </Button>
       {status ? <p className="text-sm text-[#6b7280]">{status}</p> : null}
