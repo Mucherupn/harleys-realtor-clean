@@ -6,11 +6,19 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { formatPrice } from '@/lib/utils/format';
 
+
+function getSafeImageSrc(src?: string) {
+  if (!src) return '/images/property-placeholder.jpg';
+  if (src.startsWith('http://') || src.startsWith('https://')) return src;
+  if (src.startsWith('/')) return src;
+  return `/images/${src}`;
+}
+
 export function PropertyCard({ property }: { property: Property }) {
   return (
     <Card className="group overflow-hidden rounded-2xl border-[#e6eaf0] p-0 shadow-[0_8px_24px_rgba(17,17,17,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(17,17,17,0.12)]">
       <div className="relative aspect-[4/3] overflow-hidden bg-[linear-gradient(145deg,#f7f8fa,#eceff3)]">
-        <Image src={property.coverImage} alt={property.title} fill className="object-cover" sizes="(min-width: 1280px) 24vw, (min-width: 768px) 40vw, 100vw" />
+        <Image src={getSafeImageSrc(property.coverImage)} alt={property.title} fill className="object-cover" sizes="(min-width: 1280px) 24vw, (min-width: 768px) 40vw, 100vw" />
         <div className="absolute left-3 top-3 sm:left-4 sm:top-4">
           <Badge>{property.status === 'for-sale' ? 'For Sale' : 'To Let'}</Badge>
         </div>

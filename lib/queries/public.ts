@@ -36,7 +36,7 @@ const toProperty = (row: Record<string, any>): Property => ({
   areaSqFt: row.area_size ?? row.area_sq_ft ?? undefined,
   summary: row.short_description ?? row.summary ?? "",
   features: Array.isArray(row.features) ? row.features : [],
-  coverImage: row.cover_image_url ?? row.coverImage ?? "",
+  coverImage: row.cover_image_url ?? row.coverImage ?? "/images/property-placeholder.jpg",
 });
 
 export async function getFeaturedPropertiesPublic(): Promise<Property[]> {
