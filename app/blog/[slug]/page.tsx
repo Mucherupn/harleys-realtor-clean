@@ -1,17 +1,12 @@
 import { notFound } from 'next/navigation';
-import { posts } from '@/lib/queries/public';
 import { SectionContainer } from '@/components/ui/section-container';
 import { formatDate } from '@/lib/utils/format';
 import { articleSchema } from '@/lib/seo/schema';
-
-export function generateStaticParams() {
-  return posts.map((post) => ({ slug: post.slug }));
-}
+import { getArticleBySlug } from '@/lib/queries/public';
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = posts.find((item) => item.slug === slug);
-
+  const post = await getArticleBySlug(slug);
   if (!post) notFound();
 
   return (

@@ -1,30 +1,20 @@
 import { notFound } from 'next/navigation';
-import { featuredProperties } from '@/lib/queries/public';
 import { SectionContainer } from '@/components/ui/section-container';
 import { PropertyDetails } from '@/components/properties/property-details';
 import { InquiryForm } from '@/components/forms/inquiry-form';
-
-export function generateStaticParams() {
-  return featuredProperties.map((property) => ({ slug: property.slug }));
-}
+import { getPropertyBySlugPublic } from '@/lib/queries/public';
 
 export default async function PropertyDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const property = featuredProperties.find((item) => item.slug === slug);
+  const property = await getPropertyBySlugPublic(slug);
 
-  if (!property) {
-    notFound();
-  }
+  if (!property) notFound();
 
   return (
     <SectionContainer className="grid gap-8 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:py-20 xl:grid-cols-[minmax(0,1fr)_360px]">
       <PropertyDetails property={property} />
       <div className="space-y-6 lg:sticky lg:top-24">
         <InquiryForm propertySlug={property.slug} />
-        <div className="rounded-xl border border-[#e5e7eb] p-5">
-          <h3 className="font-semibold">Related listings</h3>
-          <p className="mt-2 text-sm leading-6 text-[#6b7280]">Additional recommendations will appear here as the catalog grows.</p>
-        </div>
       </div>
     </SectionContainer>
   );
