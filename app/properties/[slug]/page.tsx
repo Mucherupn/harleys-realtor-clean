@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { MessageCircle, Phone } from 'lucide-react';
 import { SectionContainer } from '@/components/ui/section-container';
 import { PropertyDetails } from '@/components/properties/property-details';
 import { InquiryForm } from '@/components/forms/inquiry-form';
@@ -13,9 +15,26 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   return (
     <SectionContainer className="grid gap-6 py-12 sm:gap-8 sm:py-16 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:py-20 xl:grid-cols-[minmax(0,1fr)_360px]">
       <PropertyDetails property={property} />
-      <div className="space-y-6 lg:sticky lg:top-24">
+      <aside className="space-y-6 lg:sticky lg:top-24">
+        <div className="space-y-4 rounded-xl border border-[#e5e7eb] bg-white p-5 sm:p-6">
+          <h2 className="text-xl font-semibold text-[#111111]">Interested in this property?</h2>
+          <p className="text-sm leading-6 text-[#5f6876]">
+            Speak to our team for pricing guidance, viewings, and full availability details.
+          </p>
+          <div className="space-y-2 text-sm">
+            <a className="inline-flex items-center gap-2 font-medium text-[#111111] hover:text-[#c01717]" href="tel:+254700000000">
+              <Phone size={16} /> +254 700 000 000
+            </a>
+            <a className="inline-flex items-center gap-2 font-medium text-[#111111] hover:text-[#c01717]" href="https://wa.me/254700000000" target="_blank" rel="noreferrer">
+              <MessageCircle size={16} /> WhatsApp us
+            </a>
+          </div>
+          <Link href="/contact" className="inline-flex h-11 w-full items-center justify-center rounded-md bg-[#e71212] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#c81010]">
+            Contact our team
+          </Link>
+        </div>
         <InquiryForm propertySlug={property.slug} />
-      </div>
+      </aside>
     </SectionContainer>
   );
 }
