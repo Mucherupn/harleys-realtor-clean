@@ -4,6 +4,7 @@ import type { Post } from "@/types/post";
 import type { Property } from "@/types/property";
 import type { Service } from "@/types/service";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getSafeImageSrc } from "@/lib/utils/image";
 import {
   getFeaturedProperties,
   getProperties,
@@ -36,7 +37,7 @@ const toProperty = (row: Record<string, any>): Property => ({
   areaSqFt: row.area_size ?? row.area_sq_ft ?? undefined,
   summary: row.short_description ?? row.summary ?? "",
   features: Array.isArray(row.features) ? row.features : [],
-  coverImage: row.cover_image_url ?? row.coverImage || "/images/property-placeholder.svg",
+  coverImage: getSafeImageSrc(row.cover_image_url ?? row.coverImage),
 });
 
 export async function getFeaturedPropertiesPublic(): Promise<Property[]> {
