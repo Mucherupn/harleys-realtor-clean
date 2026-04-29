@@ -15,7 +15,7 @@ export function PropertyCard({ property }: { property: Property }) {
       aria-label={`View details for ${property.title}`}
     >
       <Card className="overflow-hidden rounded-2xl border-[#e6eaf0] p-0 shadow-[0_8px_24px_rgba(17,17,17,0.06)] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_16px_34px_rgba(17,17,17,0.12)]">
-        <div className="relative aspect-[16/11] overflow-hidden bg-[linear-gradient(145deg,#f7f8fa,#eceff3)] sm:aspect-[4/3]">
+        <div className="relative aspect-[4/3] overflow-hidden bg-[linear-gradient(145deg,#f7f8fa,#eceff3)]">
           <Image
             src={getSafeImageSrc(property.coverImage)}
             alt={property.title}
@@ -36,17 +36,17 @@ export function PropertyCard({ property }: { property: Property }) {
           <p className="break-words text-sm text-[#616977]">{property.location}</p>
           <div className="flex flex-wrap gap-x-4 gap-y-2 border-y border-[#edf0f4] py-3 text-xs text-[#6b7280]">
             {property.bedrooms ? (
-              <span className="inline-flex items-center gap-1">
+              <span className="inline-flex items-center gap-1 break-words">
                 <BedDouble size={14} /> {property.bedrooms} Beds
               </span>
             ) : null}
             {property.bathrooms ? (
-              <span className="inline-flex items-center gap-1">
+              <span className="inline-flex items-center gap-1 break-words">
                 <Bath size={14} /> {property.bathrooms} Baths
               </span>
             ) : null}
             {property.areaSqFt ? (
-              <span className="inline-flex items-center gap-1">
+              <span className="inline-flex items-center gap-1 break-words">
                 <Ruler size={14} /> {property.areaSqFt} {property.areaUnit ?? 'sq ft'}
               </span>
             ) : null}
