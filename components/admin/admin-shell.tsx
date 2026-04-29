@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import type { Route } from 'next';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import type { PropsWithChildren } from 'react';
+import { createSupabaseBrowserClient } from '@/lib/supabase/browser';
 import { cn } from '@/lib/utils/cn';
 
 const links = [
@@ -17,6 +18,14 @@ const links = [
 
 export function AdminShell({ children }: PropsWithChildren) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const supabase = createSupabaseBrowserClient();
+    await supabase?.auth.signOut();
+    router.push('/stream/login');
+    router.refresh();
+  };
 
   const title = links.find((link) => pathname.startsWith(link.href))?.label ?? 'Admin';
 
@@ -56,9 +65,9 @@ export function AdminShell({ children }: PropsWithChildren) {
               </div>
               <div className="flex items-center gap-4">
                 <span className="rounded-full bg-[#fff1f1] px-3 py-1 text-xs font-semibold text-[#e71212]">Admin User</span>
-                <Link href="/stream/login" className="text-sm font-medium text-[#6b7280] hover:text-[#111111]">
+                <button type="button" onClick={handleLogout} className="text-sm font-medium text-[#6b7280] hover:text-[#111111]">
                   Logout
-                </Link>
+                </button>
               </div>
             </div>
           </header>

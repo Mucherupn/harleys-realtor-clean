@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { type ChangeEvent, type InputHTMLAttributes, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FormField } from '@/components/admin/form-fields';
@@ -11,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useAdmin } from '@/lib/admin/admin-context';
+import { buildPropertySlug } from '@/lib/utils/slug';
 import type { AdminProperty } from '@/types/admin';
 
 const schema = z.object({
@@ -32,6 +34,32 @@ const schema = z.object({
 });
 
 type FormValues = z.infer<typeof schema>;
+
+type SelectedPropertyImage = {
+  id: string;
+  file: File;
+  name: string;
+  previewUrl: string;
+  isCover: boolean;
+};
+
+type DirectoryInputProps = InputHTMLAttributes<HTMLInputElement> & { webkitdirectory?: string };
+
+function isImageFile(file: File): boolean {
+  return file.type.startsWith('image/');
+}
+
+function findMainImage(files: File[]): File | undefined {
+  return files.find((file) => file.name.toLowerCase().includes('main'));
+}
+
+function createImagePreview(file: File): string {
+  return URL.createObjectURL(file);
+}
+
+function revokeImagePreviews(previews: Array<{ previewUrl: string }>): void {
+  previews.forEach((preview) => URL.revokeObjectURL(preview.previewUrl));
+}
 
 function mapPropertyToForm(property?: AdminProperty): FormValues {
   return {
@@ -57,12 +85,94 @@ export function PropertyForm({ property }: { property?: AdminProperty }) {
   const isEdit = Boolean(property);
   const router = useRouter();
   const { createProperty, updateProperty } = useAdmin();
+  const [selectedImages, setSelectedImages] = useState<SelectedPropertyImage[]>([]);
+  const previousImagesRef = useRef<SelectedPropertyImage[]>([]);
 
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({ resolver: zodResolver(schema), defaultValues: mapPropertyToForm(property) });
+
+  const watched = watch(['title', 'propertyType', 'purpose', 'location']);
+  const autoSlug = useMemo(
+    () =>
+      buildPropertySlug({
+        title: watched[0],
+        propertyType: watched[1],
+        purpose: watched[2],
+        location: watched[3],
+      }),
+    [watched]
+  );
+
+  useEffect(() => {
+    if (!isEdit) {
+      setValue('slug', autoSlug);
+    }
+  }, [autoSlug, isEdit, setValue]);
+
+  useEffect(() => {
+    const previousImages = previousImagesRef.current;
+    previousImagesRef.current = selectedImages;
+    revokeImagePreviews(previousImages.filter((old) => !selectedImages.some((current) => current.id === old.id)));
+  }, [selectedImages]);
+
+  useEffect(() => () => revokeImagePreviews(previousImagesRef.current), []);
+
+  const handleFolderChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []).filter(isImageFile);
+    if (!files.length) {
+      setSelectedImages([]);
+      return;
+    }
+
+    const mainFile = findMainImage(files);
+    const nextImages = files.map((file) => {
+      const id = `${file.name}-${file.lastModified}-${crypto.randomUUID()}`;
+      return {
+        id,
+        file,
+        name: file.name,
+        previewUrl: createImagePreview(file),
+        isCover: mainFile ? file === mainFile : false,
+      };
+    });
+
+    if (!nextImages.some((image) => image.isCover) && nextImages[0]) {
+      nextImages[0].isCover = true;
+    }
+
+    const cover = nextImages.find((image) => image.isCover);
+    setSelectedImages(nextImages);
+    if (cover) {
+      setValue('coverImage', cover.name);
+    }
+    setValue('galleryImages', nextImages.map((image) => image.name).join(', '));
+  };
+
+  const setCoverImage = (id: string) => {
+    setSelectedImages((current) => {
+      const next = current.map((image) => ({ ...image, isCover: image.id === id }));
+      const cover = next.find((image) => image.isCover);
+      if (cover) setValue('coverImage', cover.name);
+      return next;
+    });
+  };
+
+  const removeImage = (id: string) => {
+    setSelectedImages((current) => {
+      const next = current.filter((image) => image.id !== id);
+      if (!next.some((image) => image.isCover) && next[0]) {
+        next[0] = { ...next[0], isCover: true };
+      }
+      setValue('galleryImages', next.map((image) => image.name).join(', '));
+      setValue('coverImage', next.find((image) => image.isCover)?.name ?? '');
+      return next;
+    });
+  };
 
   const onSubmit = handleSubmit((values) => {
     const payload = {
@@ -91,7 +201,12 @@ export function PropertyForm({ property }: { property?: AdminProperty }) {
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="grid gap-4 md:grid-cols-2">
         <FormField label="Title" error={errors.title?.message}><Input {...register('title')} /></FormField>
-        <FormField label="Slug" error={errors.slug?.message}><Input {...register('slug')} /></FormField>
+        <FormField label="Slug" error={errors.slug?.message}>
+          <div className="space-y-2">
+            <Input {...register('slug')} />
+            <Button type="button" variant="secondary" onClick={() => setValue('slug', autoSlug)}>Regenerate slug</Button>
+          </div>
+        </FormField>
         <FormField label="Purpose" error={errors.purpose?.message}>
           <Select {...register('purpose')}>
             <option value="sale">Sale</option>
@@ -106,6 +221,27 @@ export function PropertyForm({ property }: { property?: AdminProperty }) {
         <FormField label="Area (sqft)" error={errors.area?.message}><Input type="number" {...register('area')} /></FormField>
         <FormField label="Cover image path" error={errors.coverImage?.message}><Input {...register('coverImage')} /></FormField>
       </div>
+
+      <div className="space-y-3 rounded-lg border border-dashed border-[#d9d9d9] p-4">
+        <label className="text-sm font-medium text-[#111111]" htmlFor="property-image-folder">Choose property image folder</label>
+        <Input id="property-image-folder" type="file" multiple accept="image/*" onChange={handleFolderChange} {...({ webkitdirectory: '' } as DirectoryInputProps)} />
+        {selectedImages.length > 0 && (
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {selectedImages.map((image) => (
+              <div key={image.id} className="space-y-2 rounded-lg border border-[#ececec] p-2">
+                <img src={image.previewUrl} alt={image.name} className="h-28 w-full rounded-md object-cover" />
+                <p className="truncate text-xs text-[#666]">{image.name}</p>
+                <div className="flex items-center gap-2">
+                  {image.isCover ? <span className="rounded bg-[#fff1f1] px-2 py-1 text-xs font-semibold text-[#e71212]">Cover</span> : null}
+                  <Button type="button" variant="secondary" onClick={() => setCoverImage(image.id)}>Set cover</Button>
+                  <Button type="button" variant="secondary" onClick={() => removeImage(image.id)}>Remove</Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       <FormField label="Gallery images (comma separated paths)"><Input {...register('galleryImages')} /></FormField>
       <FormField label="Short description" error={errors.shortDescription?.message}><Textarea rows={3} {...register('shortDescription')} /></FormField>
       <FormField label="Full description" error={errors.fullDescription?.message}><Textarea rows={8} {...register('fullDescription')} /></FormField>
