@@ -17,7 +17,7 @@ const serviceLinks = [
 export function Footer() {
   return (
     <footer className="bg-[#111214] text-white">
-      <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 md:gap-12 lg:grid-cols-4 lg:gap-10 lg:px-8 lg:py-16">
+      <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:grid-cols-2 md:gap-12 lg:grid-cols-4 lg:gap-10 lg:px-8 lg:py-16">
         <div className="space-y-4 lg:col-span-1">
           <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">{siteConfig.name}</h3>
           <p className="max-w-sm text-sm leading-6 text-white/68">
@@ -71,7 +71,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/12">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 px-4 py-5 text-xs text-white/55 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 px-4 py-5 text-xs text-white/55 sm:px-6 sm:flex-row sm:items-center sm:justify-between lg:px-8">
           <p>© {new Date().getFullYear()} Harleys Realtor. All rights reserved.</p>
           <p>Turning dreams into addresses.</p>
         </div>

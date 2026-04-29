@@ -35,7 +35,7 @@ export function QuoteForm() {
       </Select>
       <Input placeholder="Property location" {...register('propertyLocation')} />
       <Textarea rows={5} placeholder="Request details" {...register('details')} />
-      <Button className="w-full sm:w-auto" type="submit" disabled={isSubmitting}>
+      <Button className="w-full" type="submit" disabled={isSubmitting}>
         {isSubmitting ? 'Submitting...' : 'Request Quote'}
       </Button>
       {status ? <p className="text-sm text-[#6b7280]">{status}</p> : null}

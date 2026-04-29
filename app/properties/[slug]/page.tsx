@@ -11,7 +11,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   if (!property) notFound();
 
   return (
-    <SectionContainer className="grid gap-8 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:py-20 xl:grid-cols-[minmax(0,1fr)_360px]">
+    <SectionContainer className="grid gap-6 py-12 sm:gap-8 sm:py-16 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:py-20 xl:grid-cols-[minmax(0,1fr)_360px]">
       <PropertyDetails property={property} />
       <div className="space-y-6 lg:sticky lg:top-24">
         <InquiryForm propertySlug={property.slug} />

@@ -10,7 +10,7 @@ import { getSafeImageSrc } from '@/lib/utils/image';
 export function PropertyCard({ property }: { property: Property }) {
   return (
     <Card className="group overflow-hidden rounded-2xl border-[#e6eaf0] p-0 shadow-[0_8px_24px_rgba(17,17,17,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(17,17,17,0.12)]">
-      <div className="relative aspect-[4/3] overflow-hidden bg-[linear-gradient(145deg,#f7f8fa,#eceff3)]">
+      <div className="relative aspect-[16/11] sm:aspect-[4/3] overflow-hidden bg-[linear-gradient(145deg,#f7f8fa,#eceff3)]">
         <Image src={getSafeImageSrc(property.coverImage)} alt={property.title} fill className="object-cover" sizes="(min-width: 1280px) 24vw, (min-width: 768px) 40vw, 100vw" />
         <div className="absolute left-3 top-3 sm:left-4 sm:top-4">
           <Badge>{property.status === 'for-sale' ? 'For Sale' : 'To Let'}</Badge>
@@ -19,10 +19,10 @@ export function PropertyCard({ property }: { property: Property }) {
       <div className="space-y-4 p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a92a0]">{property.propertyType}</p>
-          <p className="text-lg font-semibold text-[#111111] sm:text-xl">{formatPrice(property.price)}</p>
+          <p className="text-lg font-semibold text-[#111111] sm:text-xl break-words">{formatPrice(property.price)}</p>
         </div>
-        <h3 className="text-lg font-semibold leading-tight text-[#111111] sm:text-xl">{property.title}</h3>
-        <p className="text-sm text-[#616977]">{property.location}</p>
+        <h3 className="text-lg font-semibold leading-tight text-[#111111] sm:text-xl break-words">{property.title}</h3>
+        <p className="text-sm text-[#616977] break-words">{property.location}</p>
         <div className="flex flex-wrap gap-x-4 gap-y-2 border-y border-[#edf0f4] py-3 text-xs text-[#6b7280]">
           {property.bedrooms ? (
             <span className="inline-flex items-center gap-1">
