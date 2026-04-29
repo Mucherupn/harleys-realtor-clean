@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { SectionContainer } from '@/components/ui/section-container';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { Card } from '@/components/ui/card';
-import { agents } from '@/lib/queries/public';
+import { getPublishedTeamMembers } from '@/lib/queries/public';
+import { EmptyState } from '@/components/shared/empty-state';
 import { buildMetadata } from '@/lib/seo/metadata';
 
 export const metadata = buildMetadata({
@@ -13,8 +14,8 @@ export const metadata = buildMetadata({
   path: '/about'
 });
 
-export default function AboutPage() {
-  const teamMembers = Array.isArray(agents) ? agents : [];
+export default async function AboutPage() {
+  const teamMembers = await getPublishedTeamMembers();
 
   return (
     <>
@@ -197,18 +198,7 @@ export default function AboutPage() {
                 <p className="mt-2 text-sm text-neutral-500">{agent?.role ?? 'Harleys Realtor'}</p>
               </Card>
             ))
-          ) : (
-            <>
-              <Card className="rounded-2xl border border-neutral-200 p-6">
-                <h4 className="text-lg font-semibold text-neutral-900">Advisory Team</h4>
-                <p className="mt-2 text-sm text-neutral-500">Sales, lettings, and client support</p>
-              </Card>
-              <Card className="rounded-2xl border border-neutral-200 p-6">
-                <h4 className="text-lg font-semibold text-neutral-900">Management Team</h4>
-                <p className="mt-2 text-sm text-neutral-500">Property operations and service delivery</p>
-              </Card>
-            </>
-          )}
+) : (<div className="sm:col-span-2 lg:col-span-3"><EmptyState title="No team members have been published yet." description="Published team profiles will appear here." /></div>) }
         </div>
       </SectionContainer>
 
