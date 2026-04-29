@@ -2,12 +2,13 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import type { Property } from '@/types/property';
 import { formatPrice } from '@/lib/utils/format';
+import { getSafeImageSrc } from '@/lib/utils/image';
 
 export function PropertyDetails({ property }: { property: Property }) {
   return (
     <section className="space-y-6 sm:space-y-8">
       <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-[#f3f4f6]">
-        <Image src={property.coverImage} alt={property.title} fill className="object-cover" sizes="(min-width: 1024px) 66vw, 100vw" />
+        <Image src={getSafeImageSrc(property.coverImage)} alt={property.title} fill className="object-cover" sizes="(min-width: 1024px) 66vw, 100vw" />
       </div>
       <div className="space-y-4">
         <Badge>{property.status === 'for-sale' ? 'For Sale' : 'To Let'}</Badge>

@@ -5,14 +5,7 @@ import type { Property } from '@/types/property';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { formatPrice } from '@/lib/utils/format';
-
-
-function getSafeImageSrc(src?: string) {
-  if (!src) return '/images/property-placeholder.jpg';
-  if (src.startsWith('http://') || src.startsWith('https://')) return src;
-  if (src.startsWith('/')) return src;
-  return `/images/${src}`;
-}
+import { getSafeImageSrc } from '@/lib/utils/image';
 
 export function PropertyCard({ property }: { property: Property }) {
   return (
