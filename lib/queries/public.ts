@@ -6,14 +6,15 @@ import type { Property } from '@/types/property';
 import type { Service } from '@/types/service';
 import { getFeaturedProperties, getProperties, getPropertyBySlug } from './properties';
 
-const isDev = process.env.NODE_ENV !== 'production';
+const isDev = process.env.NODE_ENV !== "production";
+
 const logError = (scope: string, error: unknown) => {
   if (!isDev || !error) return;
 
   if (
-    typeof error === 'object' &&
+    typeof error === "object" &&
     error !== null &&
-    Object.keys(error).length === 0
+    Object.keys(error as Record<string, unknown>).length === 0
   ) {
     return;
   }
@@ -47,7 +48,10 @@ export async function getPublishedArticles(): Promise<Post[]> {
   const supabase = await createSupabaseServerClient();
   if (!supabase) return [];
   const { data, error } = await supabase.from('articles').select('*').eq('published', true).order('published_at', { ascending: false });
-  if (error) { logError('getPublishedArticles', error); return []; }
+  if (error && typeof error === 'object' && Object.keys(error as Record<string, unknown>).length > 0) {
+    logError('getPublishedArticles', error);
+    return [];
+  }
   return (data ?? []).map((row: any) => ({ id: String(row.id), slug: row.slug, title: row.title, excerpt: row.excerpt ?? '', content: row.content ?? '', category: row.category ?? 'Insights', publishedAt: row.published_at ?? row.created_at, author: row.author ?? 'Harleys Realtor' }));
 }
 
