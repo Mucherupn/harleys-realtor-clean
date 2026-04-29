@@ -7,7 +7,19 @@ import type { Service } from '@/types/service';
 import { getFeaturedProperties, getProperties, getPropertyBySlug } from './properties';
 
 const isDev = process.env.NODE_ENV !== 'production';
-const logError = (scope: string, error: unknown) => isDev && console.error(`[public:${scope}]`, error);
+const logError = (scope: string, error: unknown) => {
+  if (!isDev || !error) return;
+
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    Object.keys(error).length === 0
+  ) {
+    return;
+  }
+
+  console.error(`[public:${scope}]`, error);
+};
 
 
 

@@ -28,11 +28,11 @@ export function PropertySearchCard({ className }: { className?: string }) {
     <Card className={cn('-mt-8 relative z-10 mx-auto w-full max-w-6xl p-4 sm:-mt-10 sm:p-5 md:-mt-12 md:p-6', className)}>
       <form className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" onSubmit={onSubmit}>
         <Input placeholder="Location" aria-label="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
-        <Select defaultValue="" value={propertyType} onChange={(e) => setPropertyType(e.target.value)}>
+        <Select value={propertyType} onChange={(e) => setPropertyType(e.target.value)}>
           <option value="">Property Type</option>
           <option value="apartment">Apartment</option><option value="maisonette">Maisonette</option><option value="office">Office</option>
         </Select>
-        <Select defaultValue="" value={purpose} onChange={(e) => setPurpose(e.target.value)}>
+        <Select value={purpose} onChange={(e) => setPurpose(e.target.value)}>
           <option value="">Status</option><option value="sale">For Sale</option><option value="rent">To Let</option>
         </Select>
         <Button className="w-full" type="submit">Search</Button>
