@@ -45,15 +45,15 @@ export function TeamForm({ member }: { member?: AdminTeamMember }) {
     },
   });
 
-  const onSubmit = handleSubmit((values) => {
+  const onSubmit = handleSubmit(async (values) => {
     const payload = { ...values, email: values.email || undefined, phone: values.phone || undefined };
     if (member) {
-      updateTeamMember(member.id, payload);
+      await updateTeamMember(member.id, payload);
       router.push('/stream/team');
       return;
     }
 
-    createTeamMember(payload);
+    await createTeamMember(payload);
     router.push('/stream/team');
   });
 
