@@ -27,7 +27,7 @@ export function PropertyDetails({ property }: { property: Property }) {
   ].filter((fact) => Boolean(fact.value));
 
   return (
-    <section className="space-y-8 sm:space-y-10">
+    <section className="min-w-0 space-y-8 sm:space-y-10">
       <Link href="/properties" className="inline-flex text-sm font-medium text-[#4b5563] hover:text-[#111111]">
         ← Back to properties
       </Link>
@@ -40,7 +40,7 @@ export function PropertyDetails({ property }: { property: Property }) {
           <span className="inline-flex items-center rounded-full border border-[#d9dee6] bg-white px-3 py-1 text-xs font-medium text-[#4b5563]">{property.propertyType}</span>
         </div>
         <h1 className="text-2xl font-semibold text-[#111111] sm:text-3xl lg:text-4xl">{property.title}</h1>
-        <p className="flex items-center gap-2 text-sm text-[#5f6876] sm:text-base">
+        <p className="flex min-w-0 items-start gap-2 break-words text-sm text-[#5f6876] sm:text-base">
           <MapPin size={16} /> {property.location}
         </p>
         <p className="text-2xl font-semibold text-[#111111] sm:text-3xl">{formatPrice(property.price)}</p>

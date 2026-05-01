@@ -7,7 +7,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/20 bg-[#e71212]/95 shadow-[0_8px_24px_rgba(0,0,0,0.16)] backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:h-[4.5rem] lg:px-8">
-        <Link href="/" className="text-sm font-semibold tracking-wide text-white sm:text-base lg:text-lg">
+        <Link href="/" className="min-w-0 truncate text-sm font-semibold tracking-wide text-white sm:text-base lg:text-lg">
           Harleys Realtor
         </Link>
 
