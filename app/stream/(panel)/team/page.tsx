@@ -29,8 +29,8 @@ export default function StreamTeamPage() {
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-2">
                     <Link href={`/stream/team/${member.id}`}><Button variant="secondary" className="h-9 px-3">Edit</Button></Link>
-                    <Button variant="secondary" className="h-9 px-3" onClick={() => toggleTeamMemberPublished(member.id)}>{member.published ? 'Unpublish' : 'Publish'}</Button>
-                    <Button variant="ghost" className="h-9 px-3 text-[#b91c1c]" onClick={() => deleteTeamMember(member.id)}>Delete</Button>
+                    <Button variant="secondary" className="h-9 px-3" onClick={async () => { await toggleTeamMemberPublished(member.id); }}>{member.published ? 'Unpublish' : 'Publish'}</Button>
+                    <Button variant="ghost" className="h-9 px-3 text-[#b91c1c]" onClick={async () => { await deleteTeamMember(member.id); }}>Delete</Button>
                   </div>
                 </td>
               </tr>

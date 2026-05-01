@@ -48,8 +48,8 @@ export function SettingsForm() {
     },
   });
 
-  const onSubmit = handleSubmit((values) => {
-    updateSettings({
+  const onSubmit = handleSubmit(async (values) => {
+    await updateSettings({
       companyName: values.companyName,
       phone: values.phone,
       email: values.email,

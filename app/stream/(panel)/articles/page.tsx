@@ -28,8 +28,8 @@ export default function StreamArticlesPage() {
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-2">
                     <Link href={`/stream/articles/${article.id}`}><Button variant="secondary" className="h-9 px-3">Edit</Button></Link>
-                    <Button variant="secondary" className="h-9 px-3" onClick={() => toggleArticlePublished(article.id)}>{article.published ? 'Unpublish' : 'Publish'}</Button>
-                    <Button variant="ghost" className="h-9 px-3 text-[#b91c1c]" onClick={() => deleteArticle(article.id)}>Delete</Button>
+                    <Button variant="secondary" className="h-9 px-3" onClick={async () => { await toggleArticlePublished(article.id); }}>{article.published ? 'Unpublish' : 'Publish'}</Button>
+                    <Button variant="ghost" className="h-9 px-3 text-[#b91c1c]" onClick={async () => { await deleteArticle(article.id); }}>Delete</Button>
                   </div>
                 </td>
               </tr>
