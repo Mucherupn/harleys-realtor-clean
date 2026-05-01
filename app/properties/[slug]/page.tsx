@@ -22,10 +22,10 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             Speak to our team for pricing guidance, viewings, and full availability details.
           </p>
           <div className="space-y-2 text-sm">
-            <a className="inline-flex items-center gap-2 font-medium text-[#111111] hover:text-[#c01717]" href="tel:+254700000000">
-              <Phone size={16} /> +254 700 000 000
+            <a className="inline-flex items-center gap-2 font-medium text-[#111111] hover:text-[#c01717]" href="tel:+254732364851">
+              <Phone size={16} /> +254 732 364 851
             </a>
-            <a className="inline-flex items-center gap-2 font-medium text-[#111111] hover:text-[#c01717]" href="https://wa.me/254700000000" target="_blank" rel="noreferrer">
+            <a className="inline-flex items-center gap-2 font-medium text-[#111111] hover:text-[#c01717]" href="https://wa.me/254732364851" target="_blank" rel="noreferrer">
               <MessageCircle size={16} /> WhatsApp us
             </a>
           </div>
@@ -33,7 +33,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
             Contact our team
           </Link>
         </div>
-        <InquiryForm propertySlug={property.slug} />
+        <InquiryForm propertySlug={property.slug} propertyTitle={property.title} />
       </aside>
     </SectionContainer>
   );

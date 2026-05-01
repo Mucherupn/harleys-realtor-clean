@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 
-export function InquiryForm({ propertySlug }: { propertySlug: string }) {
+export function InquiryForm({ propertySlug, propertyTitle }: { propertySlug: string; propertyTitle?: string }) {
   const [status, setStatus] = useState('');
   const {
     register,
@@ -16,12 +16,12 @@ export function InquiryForm({ propertySlug }: { propertySlug: string }) {
     formState: { isSubmitting }
   } = useForm<InquiryInput>({
     resolver: zodResolver(inquirySchema),
-    defaultValues: { propertySlug }
+    defaultValues: { propertySlug, propertyTitle }
   });
 
   async function onSubmit(values: InquiryInput) {
     const response = await fetch('/api/inquiry', { method: 'POST', body: JSON.stringify(values) });
-    setStatus(response.ok ? 'Inquiry sent.' : 'We could not send your inquiry.');
+    setStatus(response.ok ? 'Inquiry sent successfully.' : 'We could not send your inquiry. Please try again.');
   }
 
   return (

@@ -11,7 +11,7 @@ export default function ContactPage() {
       <div className="space-y-4">
         <h1 className="text-3xl font-semibold sm:text-4xl">Contact Us</h1>
         <p className="text-sm leading-7 text-[#6b7280] sm:text-base">Speak with our Nairobi team for clear guidance and prompt follow-up.</p>
-        <p className="text-sm text-[#111111]"><strong>Phone:</strong> {siteConfig.phone}</p>
+        <p className="text-sm text-[#111111]"><strong>Phone:</strong> {siteConfig.phoneDisplay}</p>
         <p className="text-sm break-all text-[#111111]"><strong>Email:</strong> {siteConfig.email}</p>
         <p className="text-sm text-[#111111]"><strong>Office:</strong> {siteConfig.location}</p>
       </div>
