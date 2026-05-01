@@ -14,7 +14,7 @@ export function PropertyCard({ property }: { property: Property }) {
       className="group block cursor-pointer rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c01717] focus-visible:ring-offset-2"
       aria-label={`View details for ${property.title}`}
     >
-      <Card className="overflow-hidden rounded-2xl border-[#e6eaf0] p-0 shadow-[0_8px_24px_rgba(17,17,17,0.06)] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_16px_34px_rgba(17,17,17,0.12)]">
+      <Card className="max-w-full overflow-hidden rounded-2xl border-[#e6eaf0] p-0 shadow-[0_8px_24px_rgba(17,17,17,0.06)] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_16px_34px_rgba(17,17,17,0.12)]">
         <div className="relative aspect-[4/3] overflow-hidden bg-[linear-gradient(145deg,#f7f8fa,#eceff3)]">
           <Image
             src={getSafeImageSrc(property.coverImage)}
@@ -27,13 +27,13 @@ export function PropertyCard({ property }: { property: Property }) {
             <Badge>{property.status === 'for-sale' ? 'For Sale' : 'To Let'}</Badge>
           </div>
         </div>
-        <div className="space-y-4 p-5 sm:p-6">
-          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+        <div className="min-w-0 space-y-4 p-5 sm:p-6">
+          <div className="flex min-w-0 flex-wrap items-center justify-between gap-x-3 gap-y-1">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a92a0]">{property.propertyType}</p>
-            <p className="break-words text-lg font-semibold text-[#111111] sm:text-xl">{formatPrice(property.price)}</p>
+            <p className="min-w-0 break-words text-lg font-semibold text-[#111111] sm:text-xl">{formatPrice(property.price)}</p>
           </div>
-          <h3 className="break-words text-lg font-semibold leading-tight text-[#111111] sm:text-xl">{property.title}</h3>
-          <p className="break-words text-sm text-[#616977]">{property.location}</p>
+          <h3 className="line-clamp-2 min-w-0 break-words text-lg font-semibold leading-tight text-[#111111] sm:text-xl">{property.title}</h3>
+          <p className="min-w-0 break-words text-sm text-[#616977]">{property.location}</p>
           <div className="flex flex-wrap gap-x-4 gap-y-2 border-y border-[#edf0f4] py-3 text-xs text-[#6b7280]">
             {property.bedrooms ? (
               <span className="inline-flex items-center gap-1 break-words">
