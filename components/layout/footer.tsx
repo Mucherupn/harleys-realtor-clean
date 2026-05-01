@@ -57,8 +57,8 @@ export function Footer() {
           <ul className="mt-4 space-y-3 text-sm leading-6 text-white/78">
             <li>{siteConfig.location}</li>
             <li>
-              <a href={`tel:${siteConfig.phone}`} className="transition-colors hover:text-white">
-                {siteConfig.phone}
+              <a href={`tel:${siteConfig.phoneDisplay}`} className="transition-colors hover:text-white">
+                {siteConfig.phoneDisplay}
               </a>
             </li>
             <li>

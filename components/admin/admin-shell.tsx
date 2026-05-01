@@ -12,6 +12,7 @@ const links = [
   { href: '/stream/dashboard', label: 'Dashboard' },
   { href: '/stream/properties', label: 'Properties' },
   { href: '/stream/articles', label: 'Articles' },
+  { href: '/stream/messages', label: 'Messages' },
   { href: '/stream/team', label: 'Team' },
   { href: '/stream/settings', label: 'Settings' },
   { href: '/stream/media', label: 'Media' },

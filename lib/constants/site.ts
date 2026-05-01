@@ -4,7 +4,9 @@ export const siteConfig = {
   description:
     'Harleys Realtor is a Nairobi-based real estate firm delivering property sales, lettings, property management, and consultancy with disciplined local execution.',
   url: 'https://www.harleysrealtor.co.ke',
-  phone: '0732364851',
+  phoneDisplay: '+254 732 364 851',
+  phoneE164: '+254732364851',
+  whatsappUrl: 'https://wa.me/254732364851',
   email: 'info@harleysrealtor.co.ke',
   location: 'Muthaiga Mini Market, Limuru Road, Nairobi',
   establishedYear: 2019,
