@@ -10,16 +10,41 @@ import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 
 export function QuoteForm() {
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const {
     register,
     handleSubmit,
+    reset,
     formState: { isSubmitting }
   } = useForm<QuoteInput>({ resolver: zodResolver(quoteSchema) });
 
   async function onSubmit(values: QuoteInput) {
-    const response = await fetch('/api/quote', { method: 'POST', body: JSON.stringify(values) });
-    setStatus(response.ok ? 'Quote request submitted.' : 'Failed to submit request.');
+    setStatus(null);
+    const response = await fetch('/api/messages', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        messageType: 'request_quote',
+        subject: `Quote request: ${values.serviceType}`,
+        fullName: values.name,
+        email: values.email,
+        phone: values.phone,
+        sourcePage: '/request-quote',
+        messageBody: values.details,
+        metadata: {
+          serviceType: values.serviceType,
+          propertyLocation: values.propertyLocation
+        }
+      })
+    });
+
+    if (response.ok) {
+      reset();
+      setStatus({ type: 'success', message: 'Thank you. Your message has been sent.' });
+      return;
+    }
+
+    setStatus({ type: 'error', message: 'Sorry, your message could not be sent. Please try again.' });
   }
 
   return (
@@ -38,7 +63,7 @@ export function QuoteForm() {
       <Button className="w-full" type="submit" disabled={isSubmitting}>
         {isSubmitting ? 'Submitting...' : 'Request Quote'}
       </Button>
-      {status ? <p className="text-sm text-[#6b7280]">{status}</p> : null}
+      {status ? <p className={`text-sm ${status.type === 'success' ? 'text-green-700' : 'text-[#e71212]'}`}>{status.message}</p> : null}
     </form>
   );
 }
