@@ -1,0 +1,7 @@
+import { createSupabaseBrowserClient } from '@/lib/supabase/browser';
+export async function listMessages(){const s=createSupabaseBrowserClient(); if(!s) throw new Error('Supabase not configured'); const {data,error}=await s.from('messages').select('*').order('created_at',{ascending:false}); if(error) throw error; return data??[];}
+export async function createMessage(payload:Record<string,unknown>){const s=createSupabaseBrowserClient(); if(!s) throw new Error('Supabase not configured'); const {error}=await s.from('messages').insert(payload); if(error) throw error;}
+export async function updateMessageStatus(id:string,status:string){const s=createSupabaseBrowserClient(); if(!s) throw new Error('Supabase not configured'); const {error}=await s.from('messages').update({status}).eq('id',id); if(error) throw error;}
+export async function markMessageRead(id:string,is_read:boolean){const s=createSupabaseBrowserClient(); if(!s) throw new Error('Supabase not configured'); const {error}=await s.from('messages').update({is_read}).eq('id',id); if(error) throw error;}
+export async function archiveMessage(id:string,archived:boolean){const s=createSupabaseBrowserClient(); if(!s) throw new Error('Supabase not configured'); const {error}=await s.from('messages').update({archived}).eq('id',id); if(error) throw error;}
+export async function deleteMessage(id:string){const s=createSupabaseBrowserClient(); if(!s) throw new Error('Supabase not configured'); const {error}=await s.from('messages').delete().eq('id',id); if(error) throw error;}

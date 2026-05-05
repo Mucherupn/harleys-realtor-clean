@@ -7,7 +7,7 @@ export function PageHeading({ title, description, actions }: { title: string; de
         <h2 className="text-2xl font-semibold text-[#111111]">{title}</h2>
         {description ? <p className="mt-1 text-sm text-[#6b7280]">{description}</p> : null}
       </div>
-      {actions ? <div className="flex items-center gap-2">{actions}</div> : null}
+      {actions ? <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">{actions}</div> : null}
     </div>
   );
 }

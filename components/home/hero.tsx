@@ -20,9 +20,9 @@ export function Hero() {
         <div className="max-w-3xl">
           <p className="text-[11px] uppercase tracking-[0.22em] text-white/72">Harleys Realtor</p>
 
-          <h1 className="mt-5 max-w-3xl text-3xl font-medium leading-[1.02] sm:text-4xl md:text-5xl lg:text-6xl">Sales. Letting. Management.</h1>
+          <h1 className="mt-5 max-w-3xl text-3xl font-medium leading-[1.04] sm:text-4xl md:text-5xl lg:text-6xl">Sales. Letting. Management.</h1>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Link href="/properties">
               <Button className="bg-[#e71212] px-5 text-white shadow-lg shadow-black/20 hover:bg-[#cf1010] sm:px-6">View Listings</Button>
             </Link>
@@ -35,7 +35,7 @@ export function Hero() {
           </div>
         </div>
 
-        <PropertySearchCard className="mt-10 border border-white/10 bg-white/95 p-4 shadow-2xl shadow-black/20 backdrop-blur sm:mt-12 md:mt-14 md:p-6" />
+        <PropertySearchCard className="mt-10 border border-white/10 bg-white/95 p-3 shadow-2xl shadow-black/20 backdrop-blur sm:mt-12 sm:p-4 md:mt-14 md:p-6" />
       </SectionContainer>
     </section>
   );

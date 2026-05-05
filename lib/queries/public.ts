@@ -24,21 +24,63 @@ const logError = (scope: string, error: unknown) => {
   console.error(`[public:${scope}]`, error);
 };
 
-const toProperty = (row: Record<string, any>): Property => ({
-  id: String(row.id),
-  slug: row.slug,
-  title: row.title,
-  location: row.location ?? "",
-  price: Number(row.price ?? row.price_kes ?? 0),
-  status: row.purpose === "rent" || row.status === "to-let" ? "to-let" : "for-sale",
-  propertyType: row.property_type ?? row.propertyType ?? "Property",
-  bedrooms: row.bedrooms ?? undefined,
-  bathrooms: row.bathrooms ?? undefined,
-  areaSqFt: row.area_size ?? row.area_sq_ft ?? undefined,
-  summary: row.short_description ?? row.summary ?? "",
-  features: Array.isArray(row.features) ? row.features : [],
-  coverImage: getSafeImageSrc(row.cover_image_url ?? row.coverImage),
-});
+const normalizeImageArray = (value: unknown): string[] => {
+  if (!Array.isArray(value)) return [];
+
+  const seen = new Set<string>();
+  const normalized: string[] = [];
+
+  for (const item of value) {
+    if (typeof item !== "string") continue;
+    const trimmed = item.trim();
+    if (!trimmed) continue;
+    const safe = getSafeImageSrc(trimmed);
+    if (seen.has(safe)) continue;
+    seen.add(safe);
+    normalized.push(safe);
+  }
+
+  return normalized;
+};
+
+const toProperty = (row: Record<string, any>): Property => {
+  const coverImage = getSafeImageSrc(row.cover_image_url ?? row.coverImage);
+  const galleryFromRow = normalizeImageArray(
+    row.gallery_image_urls ?? row.galleryImages,
+  );
+  const galleryImages = [coverImage, ...galleryFromRow].filter(
+    (value, index, array) => array.indexOf(value) === index,
+  );
+
+  return {
+    id: String(row.id),
+    slug: row.slug,
+    title: row.title,
+    referenceCode: row.reference_code ?? undefined,
+    location: row.location ?? "",
+    neighborhood: row.neighborhood ?? undefined,
+    address: row.address ?? undefined,
+    price: Number(row.price ?? row.price_kes ?? 0),
+    currency: row.currency ?? undefined,
+    purpose: row.purpose ?? undefined,
+    status: row.purpose === "rent" || row.status === "to-let" ? "to-let" : "for-sale",
+    propertyType: row.property_type ?? row.propertyType ?? "Property",
+    bedrooms: row.bedrooms ?? undefined,
+    bathrooms: row.bathrooms ?? undefined,
+    parkingSpaces: row.parking_spaces ?? undefined,
+    areaSqFt: row.area_size ?? row.area_sq_ft ?? undefined,
+    areaUnit: row.area_unit ?? undefined,
+    summary: row.short_description ?? row.summary ?? "",
+    description: row.description ?? undefined,
+    features: Array.isArray(row.features) ? row.features : [],
+    coverImage,
+    galleryImages,
+    featured: row.featured ?? undefined,
+    published: row.published ?? undefined,
+    createdAt: row.created_at ?? undefined,
+    updatedAt: row.updated_at ?? undefined,
+  };
+};
 
 export async function getFeaturedPropertiesPublic(): Promise<Property[]> {
   const rows = await getFeaturedProperties();

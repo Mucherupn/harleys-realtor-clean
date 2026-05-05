@@ -111,7 +111,7 @@ export const initialTeamMembers: AdminTeamMember[] = [
     bio: 'Justus leads Harleys Realtor with a focus on premium advisory, disciplined service delivery, and long-term client trust.',
     image: '/next.svg',
     email: 'justus@harleysrealtor.com',
-    phone: '+254700000001',
+    phone: '+254 732 364 851',
     published: true,
     createdAt: now,
     updatedAt: now,
@@ -131,7 +131,7 @@ export const initialTeamMembers: AdminTeamMember[] = [
 
 export const initialSettings: AdminSettings = {
   companyName: 'Harleys Realtor',
-  phone: '+254 700 000 000',
+  phone: '+254 732 364 851',
   email: 'info@harleysrealtor.com',
   address: 'Westlands Business Park, Nairobi',
   heroImagePath: '/next.svg',

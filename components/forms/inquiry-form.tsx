@@ -8,20 +8,50 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 
-export function InquiryForm({ propertySlug }: { propertySlug: string }) {
-  const [status, setStatus] = useState('');
+export function InquiryForm({ propertySlug, propertyTitle }: { propertySlug: string; propertyTitle?: string }) {
+  const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const {
     register,
     handleSubmit,
+    reset,
     formState: { isSubmitting }
   } = useForm<InquiryInput>({
     resolver: zodResolver(inquirySchema),
-    defaultValues: { propertySlug }
+    defaultValues: { propertySlug, propertyTitle }
   });
 
   async function onSubmit(values: InquiryInput) {
-    const response = await fetch('/api/inquiry', { method: 'POST', body: JSON.stringify(values) });
-    setStatus(response.ok ? 'Inquiry sent.' : 'We could not send your inquiry.');
+    setStatus(null);
+    const response = await fetch('/api/messages', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        messageType: 'property_enquiry',
+        subject: `Property enquiry: ${values.propertyTitle ?? values.propertySlug}`,
+        fullName: values.name,
+        email: values.email,
+        phone: values.phone,
+        propertySlug: values.propertySlug,
+        propertyTitle: values.propertyTitle,
+        sourcePage: `/properties/${values.propertySlug}`,
+        messageBody: values.message
+      })
+    });
+
+    if (response.ok) {
+      reset({
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+        propertySlug,
+        propertyTitle
+      });
+      setStatus({ type: 'success', message: 'Thank you. Your message has been sent.' });
+      return;
+    }
+
+    setStatus({ type: 'error', message: 'Sorry, your message could not be sent. Please try again.' });
   }
 
   return (
@@ -31,10 +61,10 @@ export function InquiryForm({ propertySlug }: { propertySlug: string }) {
       <Input type="email" placeholder="Email" {...register('email')} />
       <Input placeholder="Phone" {...register('phone')} />
       <Textarea rows={4} placeholder="Your message" {...register('message')} />
-      <Button className="w-full sm:w-auto" type="submit" disabled={isSubmitting}>
+      <Button className="w-full" type="submit" disabled={isSubmitting}>
         {isSubmitting ? 'Sending...' : 'Submit Inquiry'}
       </Button>
-      {status ? <p className="text-sm text-[#6b7280]">{status}</p> : null}
+      {status ? <p className={`text-sm ${status.type === 'success' ? 'text-green-700' : 'text-[#e71212]'}`}>{status.message}</p> : null}
     </form>
   );
 }

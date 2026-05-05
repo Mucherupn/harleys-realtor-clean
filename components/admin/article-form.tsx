@@ -43,14 +43,14 @@ export function ArticleForm({ article }: { article?: AdminArticle }) {
     },
   });
 
-  const onSubmit = handleSubmit((values) => {
+  const onSubmit = handleSubmit(async (values) => {
     if (article) {
-      updateArticle(article.id, values);
+      await updateArticle(article.id, values);
       router.push('/stream/articles');
       return;
     }
 
-    createArticle(values);
+    await createArticle(values);
     router.push('/stream/articles');
   });
 

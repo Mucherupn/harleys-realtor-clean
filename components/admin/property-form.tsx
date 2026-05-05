@@ -217,7 +217,7 @@ export function PropertyForm({ property }: { property?: AdminProperty }) {
     };
 
     if (property) {
-      updateProperty(property.id, payload);
+      await updateProperty(property.id, payload);
       router.push('/stream/properties');
       return;
     }

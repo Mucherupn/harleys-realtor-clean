@@ -21,7 +21,7 @@ export default function StreamPropertiesPage() {
         {properties.length === 0 ? (
           <div className="p-8 text-sm text-[#6b7280]">No properties found in Supabase yet.</div>
         ) : null}
-        <table className="min-w-full text-left text-sm">
+        <table className="min-w-[700px] w-full text-left text-sm">
           <thead className="bg-[#fafafa] text-[#6b7280]">
             <tr>
               <th className="px-4 py-3 font-medium">Property</th>
@@ -47,13 +47,13 @@ export default function StreamPropertiesPage() {
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-2">
                     <Link href={`/stream/properties/${property.id}`}><Button variant="secondary" className="h-9 px-3">Edit</Button></Link>
-                    <Button variant="secondary" className="h-9 px-3" onClick={() => togglePropertyPublished(property.id)}>
+                    <Button variant="secondary" className="h-9 px-3" onClick={async () => { await togglePropertyPublished(property.id); }}>
                       {property.published ? 'Unpublish' : 'Publish'}
                     </Button>
-                    <Button variant="secondary" className="h-9 px-3" onClick={() => togglePropertyFeatured(property.id)}>
+                    <Button variant="secondary" className="h-9 px-3" onClick={async () => { await togglePropertyFeatured(property.id); }}>
                       {property.featured ? 'Unfeature' : 'Feature'}
                     </Button>
-                    <Button variant="ghost" className="h-9 px-3 text-[#b91c1c]" onClick={() => deleteProperty(property.id)}>Delete</Button>
+                    <Button variant="ghost" className="h-9 px-3 text-[#b91c1c]" onClick={async () => { await deleteProperty(property.id); }}>Delete</Button>
                   </div>
                 </td>
               </tr>

@@ -15,7 +15,7 @@ export function organizationSchema() {
       addressCountry: 'KE'
     },
     email: siteConfig.email,
-    telephone: siteConfig.phone
+    telephone: siteConfig.phoneDisplay
   };
 }
 

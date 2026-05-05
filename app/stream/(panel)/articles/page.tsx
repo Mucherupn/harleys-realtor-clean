@@ -18,7 +18,7 @@ export default function StreamArticlesPage() {
       />
 
       <div className="overflow-x-auto rounded-xl border border-[#efefef]">
-        <table className="min-w-full text-left text-sm">
+        <table className="min-w-[700px] w-full text-left text-sm">
           <thead className="bg-[#fafafa] text-[#6b7280]"><tr><th className="px-4 py-3 font-medium">Title</th><th className="px-4 py-3 font-medium">Status</th><th className="px-4 py-3 font-medium">Actions</th></tr></thead>
           <tbody>
             {articles.map((article) => (
@@ -28,8 +28,8 @@ export default function StreamArticlesPage() {
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-2">
                     <Link href={`/stream/articles/${article.id}`}><Button variant="secondary" className="h-9 px-3">Edit</Button></Link>
-                    <Button variant="secondary" className="h-9 px-3" onClick={() => toggleArticlePublished(article.id)}>{article.published ? 'Unpublish' : 'Publish'}</Button>
-                    <Button variant="ghost" className="h-9 px-3 text-[#b91c1c]" onClick={() => deleteArticle(article.id)}>Delete</Button>
+                    <Button variant="secondary" className="h-9 px-3" onClick={async () => { await toggleArticlePublished(article.id); }}>{article.published ? 'Unpublish' : 'Publish'}</Button>
+                    <Button variant="ghost" className="h-9 px-3 text-[#b91c1c]" onClick={async () => { await deleteArticle(article.id); }}>Delete</Button>
                   </div>
                 </td>
               </tr>
