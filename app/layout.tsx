@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   applicationName: siteConfig.name,
   icons: {
-    icon: '/favicon.ico',
     shortcut: '/favicon.ico'
   },
   openGraph: {
