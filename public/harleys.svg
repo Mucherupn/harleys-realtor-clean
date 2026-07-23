@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Harleys Realtor">
+  <rect width="512" height="512" rx="96" fill="#ef0e0e" />
+  <path
+    fill="#ffffff"
+    d="M84 271.5 256 148l172 123.5-33.5 47L365 297.3V400H147V297.3l-29.5 21.2L84 271.5Zm111 76.5h122v-88.5L256 215l-61 44.5V348ZM147 160h54v56l-54 39V160Z"
+  />
+</svg>
