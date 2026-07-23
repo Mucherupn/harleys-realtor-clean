@@ -7,31 +7,45 @@ import { organizationSchema } from '@/lib/seo/schema';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
+
   title: `${siteConfig.name} | ${siteConfig.tagline}`,
   description: siteConfig.description,
   applicationName: siteConfig.name,
+
   icons: {
-    shortcut: '/favicon.ico'
+    icon: [
+      { url: '/favicon.png', type: 'image/png' },
+    ],
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
   },
+
   openGraph: {
     title: `${siteConfig.name} | ${siteConfig.tagline}`,
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.name,
     locale: 'en_KE',
-    type: 'website'
-  }
+    type: 'website',
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#ef0e0e'
+  themeColor: '#ef0e0e',
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className="bg-white text-[#111111]">
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema()) }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema()),
+          }}
+        />
         <Navbar />
         <main>{children}</main>
         <Footer />
